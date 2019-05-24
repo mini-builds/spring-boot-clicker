@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Spring Boot Clicker</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style>
+        #click-count {
+            font-family: 'Gill Sans','Gill Sans MT',Calibri,'Trebuchet MS',sans-serif;
+            font-size: 288pt;
+            text-align: center;
+            margin-top: calc(100px);
+            user-select: none;
+        }
+    </style>
+
+    <script>
+        async function clickRequest(method) {
+            let rawResponse = await fetch('/click', {
+                method: method,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            });
+            let content = await rawResponse.json();
+            console.log(content);
+            document.querySelector('#click-count').innerHTML = content.clickCount;
+        }
+
+        async function click() {
+            clickRequest('POST');
+        }
+
+        async function init() {
+            clickRequest('GET');
+        }
+
+        window.addEventListener('load', init);
+        window.addEventListener('click', click);
+    </script>
+</head>
+<body>
+    <div id="click-count"></div>
+</body>
+</html>
